@@ -1,4 +1,6 @@
 library(shiny)
+library(UsingR)
+data(galton)
 
 shinyUI(pageWithSidebar(
     # Application title

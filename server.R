@@ -8,10 +8,8 @@ calcMidParentHeight <- function(fatherheight, motherheight) {
 }
 
 predictChildHeight <- function(midParentHeight) {
-  predict(model, data.frame(
-    parent=c(midParentHeight)
-    ), 
-  interval="confidence")
+  predict(model, data.frame(parent=c(midParentHeight)), 
+    interval="confidence")
 }
 
 shinyServer(
@@ -30,9 +28,12 @@ shinyServer(
     
     output$fitplot <- renderPlot({
       plot(galton$parent, galton$child, xlab="Midparent height(inches)",
+           xlim=c(60, 80),
+           ylim=c(60, 80),
            ylab="Child's height (inches)",
            main="Galton data set: Linear Regression fit")
-      lines(galton$parent, model$fitted, col="red", lwd=3)
+      #lines(galton$parent, model$fitted, col="red", lwd=3)
+      abline(coef=model$coef, col="red", lwd=3)
       abline(v=midParentHeight(), col="blue", lwd=1)
       abline(h=predictedChildHeight()[[1]], col="blue", lwd=1)
     })
@@ -54,12 +55,4 @@ shinyServer(
     })
   }
 )
-
-
-# library(UsingR)
-# data(galton)
-# model <- lm(child ~ parent, data=galton)
-# predict(model, data.frame(parent=c(40)), interval="confidence")
-# 
-# lines(galton$parent, lm1$fitted, col=”red”, lwd=3)
 
