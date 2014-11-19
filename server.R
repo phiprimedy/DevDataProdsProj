@@ -16,12 +16,12 @@ predictChildHeight <- function(midParentHeight) {
 
 shinyServer(
   function(input, output) {
-    output$inputValueFather <- renderText({paste(input$fatherheight, " inches")})
-    output$inputValueMother <- renderText({paste(input$motherheight, " inches")})
+    output$inputValueFather <- renderText({input$fatherheight})
+    output$inputValueMother <- renderText({input$motherheight})
     midParentHeight <- reactive({calcMidParentHeight(input$fatherheight,
                                                     input$motherheight)}
                       )
-    output$midParentHeight <- renderText(paste(midParentHeight(), " inches"))
+    output$midParentHeight <- renderText(midParentHeight())
     
     predictedChildHeight <- reactive({
       predict(model, data.frame(parent=c(midParentHeight())), interval="confidence")})
